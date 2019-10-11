@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
+import './BurgerIngredient.scss';
 
 interface Props {
   type: string;
