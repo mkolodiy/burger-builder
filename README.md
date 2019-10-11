@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Burger Bulder
+
+A React app for building and ordering burgers based on a Udemy course by Maximilian Schwarzmüller.
 
 ## Available Scripts
 
