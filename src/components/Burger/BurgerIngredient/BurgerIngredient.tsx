@@ -5,7 +5,7 @@ interface Props {
   type: string;
 }
 
-enum Types {
+enum IngredientTypes {
   BREAD_BOTTOM = 'bread-bottom',
   BREAD_TOP = 'bread-top',
   MEAT = 'meat',
@@ -18,10 +18,10 @@ const BurgerIngredient = (props: Props) => {
   let ingredient = null;
 
   switch (props.type) {
-    case Types.BREAD_BOTTOM:
+    case IngredientTypes.BREAD_BOTTOM:
       ingredient = <div className="ingredient__bread-bottom"></div>;
       break;
-    case Types.BREAD_TOP:
+    case IngredientTypes.BREAD_TOP:
       ingredient = (
         <div className="ingredient__bread-top">
           <div className="ingredient__seeds1"></div>
@@ -29,16 +29,16 @@ const BurgerIngredient = (props: Props) => {
         </div>
       );
       break;
-    case Types.MEAT:
+    case IngredientTypes.MEAT:
       ingredient = <div className="ingredient__meat"></div>;
       break;
-    case Types.CHEESE:
+    case IngredientTypes.CHEESE:
       ingredient = <div className="ingredient__cheese"></div>;
       break;
-    case Types.SALAD:
+    case IngredientTypes.SALAD:
       ingredient = <div className="ingredient__salad"></div>;
       break;
-    case Types.BACON:
+    case IngredientTypes.BACON:
       ingredient = <div className="ingredient__bacon"></div>;
       break;
     default:
@@ -48,5 +48,5 @@ const BurgerIngredient = (props: Props) => {
   return ingredient;
 };
 
-export { Types };
+export { IngredientTypes };
 export default BurgerIngredient;
