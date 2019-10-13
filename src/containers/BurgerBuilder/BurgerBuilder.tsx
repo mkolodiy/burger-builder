@@ -3,8 +3,12 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import { InnerIngredient } from '../../components/Burger/BurgerIngredient/BurgerIngredient';
 
+interface Ingredients {
+  [key: string]: number;
+}
+
 interface State {
-  ingredients: { [key: string]: number };
+  ingredients: Ingredients;
   totalPrice: number;
   purchasable: boolean;
 }
@@ -63,7 +67,7 @@ class BurgerBuilder extends Component {
     this._updatePurchase(updatedIngredients);
   };
 
-  _updatePurchase = (ingredients: { [key: string]: number }) => {
+  _updatePurchase = (ingredients: Ingredients) => {
     const sum = Object.keys(ingredients)
       .map(key => ingredients[key])
       .reduce((sum, value) => sum + value, 0);
