@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import { InnerIngredient } from '../../components/Burger/BurgerIngredient/BurgerIngredient';
-import { string } from 'prop-types';
 
 interface State {
   ingredients: { [key: string]: number };
@@ -73,6 +72,7 @@ class BurgerBuilder extends Component {
           addIngredient={this._addIngredientHandler}
           removeIngredient={this._removeIngredientHandler}
           disabled={disableInfo}
+          price={this.state.totalPrice}
         />
       </Fragment>
     );
