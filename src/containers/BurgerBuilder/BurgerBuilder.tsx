@@ -6,6 +6,7 @@ import { InnerIngredient } from '../../components/Burger/BurgerIngredient/Burger
 interface State {
   ingredients: { [key: string]: number };
   totalPrice: number;
+  purchasable: boolean;
 }
 
 const INGREDIENT_PRICES = {
@@ -23,7 +24,8 @@ class BurgerBuilder extends Component {
       cheese: 0,
       meat: 0
     },
-    totalPrice: 4
+    totalPrice: 4,
+    purchasable: false
   };
 
   _addIngredientHandler = (type: InnerIngredient) => {
@@ -39,6 +41,7 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: updatedTotalPrice
     });
+    this._updatePurchase(updatedIngredients);
   };
 
   _removeIngredientHandler = (type: InnerIngredient) => {
@@ -57,6 +60,14 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: updatedTotalPrice
     });
+    this._updatePurchase(updatedIngredients);
+  };
+
+  _updatePurchase = (ingredients: { [key: string]: number }) => {
+    const sum = Object.keys(ingredients)
+      .map(key => ingredients[key])
+      .reduce((sum, value) => sum + value, 0);
+    this.setState({ purchasable: sum > 0 });
   };
 
   render() {
@@ -73,6 +84,7 @@ class BurgerBuilder extends Component {
           removeIngredient={this._removeIngredientHandler}
           disabled={disableInfo}
           price={this.state.totalPrice}
+          purchasable={this.state.purchasable}
         />
       </Fragment>
     );

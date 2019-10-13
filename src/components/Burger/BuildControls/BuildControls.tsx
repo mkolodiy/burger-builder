@@ -15,6 +15,7 @@ interface Props {
   removeIngredient: (type: InnerIngredient) => void;
   disabled: { [key: string]: boolean };
   price: number;
+  purchasable: boolean;
 }
 
 const BuildControls = (props: Props) => (
@@ -31,6 +32,9 @@ const BuildControls = (props: Props) => (
         disabled={props.disabled[control.type]}
       />
     ))}
+    <button className="build-controls__order-btn" disabled={!props.purchasable}>
+      ORDER NOW
+    </button>
   </div>
 );
 
