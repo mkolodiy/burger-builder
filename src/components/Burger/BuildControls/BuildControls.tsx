@@ -1,22 +1,30 @@
 import React from 'react';
-import { IngredientTypes } from '../BurgerIngredient/BurgerIngredient';
+import { InnerIngredient } from '../BurgerIngredient/BurgerIngredient';
 import './BuildControls.scss';
 import BuildControl from './BuildControl/BuildControl';
 
 const controls = [
-  { label: 'Meat', type: IngredientTypes.MEAT },
-  { label: 'Cheese', type: IngredientTypes.CHEESE },
-  { label: 'Salad', type: IngredientTypes.SALAD },
-  { label: 'Meat', type: IngredientTypes.BACON }
+  { label: 'Meat', type: InnerIngredient.MEAT },
+  { label: 'Cheese', type: InnerIngredient.CHEESE },
+  { label: 'Salad', type: InnerIngredient.SALAD },
+  { label: 'Meat', type: InnerIngredient.BACON }
 ];
 
-const BuildControls = () => (
+interface Props {
+  addIngredient: (type: InnerIngredient) => void;
+  removeIngredient: (type: InnerIngredient) => void;
+  disabled: { [key: string]: boolean };
+}
+
+const BuildControls = (props: Props) => (
   <div className="build-controls">
     {controls.map(control => (
       <BuildControl
         key={control.type}
         label={control.label}
-        type={control.type}
+        addIngredient={() => props.addIngredient(control.type)}
+        removeIngredient={() => props.removeIngredient(control.type)}
+        disabled={props.disabled[control.type]}
       />
     ))}
   </div>

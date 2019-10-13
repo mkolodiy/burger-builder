@@ -1,6 +1,6 @@
 import React from 'react';
 import BurgerIngredient, {
-  IngredientTypes
+  OuterIngredient
 } from './BurgerIngredient/BurgerIngredient';
 import './Burger.scss';
 
@@ -24,13 +24,13 @@ const Burger = (props: Props) => {
 
   return (
     <div className="burger">
-      <BurgerIngredient type={IngredientTypes.BREAD_TOP} />
+      <BurgerIngredient type={OuterIngredient.BREAD_TOP} />
       {burgerIngredients.length !== 0 ? (
         burgerIngredients
       ) : (
         <p>Please start adding ingredients!</p>
       )}
-      <BurgerIngredient type={IngredientTypes.BREAD_BOTTOM} />
+      <BurgerIngredient type={OuterIngredient.BREAD_BOTTOM} />
     </div>
   );
 };
