@@ -1,24 +1,18 @@
-import React from 'react';
-import BurgerIngredient, {
-  OuterIngredient
-} from './BurgerIngredient/BurgerIngredient';
+import React, { FunctionComponent } from 'react';
+import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 import './Burger.scss';
+import { Ingredient, OuterIngredient } from '../../common/Types';
 
 interface Props {
-  ingredients: {
-    meat?: number;
-    cheese?: number;
-    salad?: number;
-    bacon?: number;
-  };
+  ingredients: Ingredient[];
 }
 
-const Burger = (props: Props) => {
-  let burgerIngredients = Object.entries(props.ingredients)
-    .map(arr => {
-      return [...Array(Number(arr[1]))].map((_, i) => {
-        return <BurgerIngredient key={arr[0] + i} type={arr[0]} />;
-      });
+const Burger: FunctionComponent<Props> = props => {
+  let burgerIngredients = props.ingredients
+    .map(i => {
+      return [...Array(i.amount)].map((_, index) => (
+        <BurgerIngredient key={i.type + index} type={i.type} />
+      ));
     })
     .reduce((arr, el) => [...arr, ...el], []);
 

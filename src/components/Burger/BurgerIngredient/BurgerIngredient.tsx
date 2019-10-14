@@ -1,23 +1,12 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import './BurgerIngredient.scss';
+import { OuterIngredient, InnerIngredient } from '../../../common/Types';
 
 interface Props {
   type: string;
 }
 
-enum OuterIngredient {
-  BREAD_BOTTOM = 'bread-bottom',
-  BREAD_TOP = 'bread-top'
-}
-
-enum InnerIngredient {
-  MEAT = 'meat',
-  CHEESE = 'cheese',
-  SALAD = 'salad',
-  BACON = 'bacon'
-}
-
-const BurgerIngredient = (props: Props) => {
+const BurgerIngredient: FunctionComponent<Props> = props => {
   let ingredient = null;
 
   switch (props.type) {
@@ -51,5 +40,4 @@ const BurgerIngredient = (props: Props) => {
   return ingredient;
 };
 
-export { OuterIngredient, InnerIngredient };
 export default BurgerIngredient;

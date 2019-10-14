@@ -1,14 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import { InnerIngredient } from '../../components/Burger/BurgerIngredient/BurgerIngredient';
-
-interface Ingredients {
-  [key: string]: number;
-}
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import { InnerIngredient, Ingredient } from '../../common/Types';
 
 interface State {
-  ingredients: Ingredients;
+  ingredients: Ingredient[];
   totalPrice: number;
   purchasable: boolean;
 }
@@ -22,25 +20,28 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends Component {
   state: State = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0
-    },
+    ingredients: [
+      { type: InnerIngredient.MEAT, amount: 0 },
+      { type: InnerIngredient.CHEESE, amount: 0 },
+      { type: InnerIngredient.SALAD, amount: 0 },
+      { type: InnerIngredient.BACON, amount: 0 }
+    ],
     totalPrice: 4,
     purchasable: false
   };
 
   _addIngredientHandler = (type: InnerIngredient) => {
-    const oldCount = this.state.ingredients[type];
-    const updatedCount = oldCount + 1;
-    const updatedIngredients = {
-      ...this.state.ingredients
+    const index = this.state.ingredients.findIndex(i => i.type === type);
+    const ingredient = this.state.ingredients[index];
+    const updatedCount = ingredient.amount + 1;
+    const updatedIngredients = [...this.state.ingredients];
+    updatedIngredients[index] = {
+      ...ingredient,
+      amount: updatedCount
     };
-    updatedIngredients[type] = updatedCount;
     const priceAddition = INGREDIENT_PRICES[type];
     const updatedTotalPrice = this.state.totalPrice + priceAddition;
+
     this.setState({
       ingredients: updatedIngredients,
       totalPrice: updatedTotalPrice
@@ -49,17 +50,17 @@ class BurgerBuilder extends Component {
   };
 
   _removeIngredientHandler = (type: InnerIngredient) => {
-    const oldCount = this.state.ingredients[type];
-    if (oldCount <= 0) {
-      return;
-    }
-    const updatedCount = oldCount - 1;
-    const updatedIngredients = {
-      ...this.state.ingredients
+    const index = this.state.ingredients.findIndex(i => i.type === type);
+    const ingredient = this.state.ingredients[index];
+    const updatedCount = ingredient.amount - 1;
+    const updatedIngredients = [...this.state.ingredients];
+    updatedIngredients[index] = {
+      ...ingredient,
+      amount: updatedCount
     };
-    updatedIngredients[type] = updatedCount;
-    const priceDeduction = INGREDIENT_PRICES[type];
-    const updatedTotalPrice = this.state.totalPrice - priceDeduction;
+    const priceAddition = INGREDIENT_PRICES[type];
+    const updatedTotalPrice = this.state.totalPrice - priceAddition;
+
     this.setState({
       ingredients: updatedIngredients,
       totalPrice: updatedTotalPrice
@@ -67,21 +68,22 @@ class BurgerBuilder extends Component {
     this._updatePurchase(updatedIngredients);
   };
 
-  _updatePurchase = (ingredients: Ingredients) => {
-    const sum = Object.keys(ingredients)
-      .map(key => ingredients[key])
+  _updatePurchase = (ingredients: Ingredient[]) => {
+    const sum = ingredients
+      .map(i => i.amount)
       .reduce((sum, value) => sum + value, 0);
     this.setState({ purchasable: sum > 0 });
   };
 
   render() {
     const disableInfo: { [key: string]: boolean } = {};
-    Object.keys(this.state.ingredients).forEach(
-      key => (disableInfo[key] = this.state.ingredients[key] <= 0)
-    );
+    this.state.ingredients.forEach(i => (disableInfo[i.type] = i.amount <= 0));
 
     return (
       <Fragment>
+        <Modal>
+          <OrderSummary ingredients={this.state.ingredients} />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           addIngredient={this._addIngredientHandler}

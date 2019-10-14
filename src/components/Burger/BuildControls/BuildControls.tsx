@@ -1,7 +1,7 @@
-import React from 'react';
-import { InnerIngredient } from '../BurgerIngredient/BurgerIngredient';
+import React, { FunctionComponent } from 'react';
 import './BuildControls.scss';
 import BuildControl from './BuildControl/BuildControl';
+import { InnerIngredient } from '../../../common/Types';
 
 const controls = [
   { label: 'Meat', type: InnerIngredient.MEAT },
@@ -18,7 +18,7 @@ interface Props {
   purchasable: boolean;
 }
 
-const BuildControls = (props: Props) => (
+const BuildControls: FunctionComponent<Props> = props => (
   <div className="build-controls">
     <p>
       Current Price: <strong>{props.price.toFixed(2)}</strong>
