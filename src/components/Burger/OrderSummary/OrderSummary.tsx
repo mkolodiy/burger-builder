@@ -1,8 +1,14 @@
 import React, { FunctionComponent, Fragment } from 'react';
-import { Ingredient } from '../../../common/Types';
+import { Ingredient, ButtonType } from '../../../common/Types';
+import Button from '../../UI/Button/Button';
 
 interface Props {
   ingredients: Ingredient[];
+}
+
+interface Props {
+  onClose: () => void;
+  onContinue: () => void;
 }
 
 const OrderSummary: FunctionComponent<Props> = props => {
@@ -20,6 +26,12 @@ const OrderSummary: FunctionComponent<Props> = props => {
       <p>A delicious burger with the following ingredients:</p>
       <ul>{ingredientSummary}</ul>
       <p>Continue to Checkout?</p>
+      <Button onClick={props.onClose} type={ButtonType.DANGER}>
+        CANCEL
+      </Button>
+      <Button onClick={props.onContinue} type={ButtonType.SUCCESS}>
+        CONTINUE
+      </Button>
     </Fragment>
   );
 };

@@ -14,3 +14,8 @@ export interface Ingredient {
   type: InnerIngredient;
   amount: number;
 }
+
+export enum ButtonType {
+  SUCCESS,
+  DANGER
+}

@@ -85,6 +85,10 @@ class BurgerBuilder extends Component {
     this.setState({ modalOpened: false });
   };
 
+  _purchaseHandler = () => {
+    alert('Test');
+  };
+
   render() {
     const disableInfo: { [key: string]: boolean } = {};
     this.state.ingredients.forEach(i => (disableInfo[i.type] = i.amount <= 0));
@@ -95,7 +99,11 @@ class BurgerBuilder extends Component {
           display={this.state.modalOpened}
           onClose={this._modalClosedHandler}
         >
-          <OrderSummary ingredients={this.state.ingredients} />
+          <OrderSummary
+            ingredients={this.state.ingredients}
+            onClose={this._modalClosedHandler}
+            onContinue={this._purchaseHandler}
+          />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
