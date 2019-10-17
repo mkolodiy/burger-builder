@@ -13,6 +13,7 @@ const controls = [
 interface Props {
   addIngredient: (type: InnerIngredient) => void;
   removeIngredient: (type: InnerIngredient) => void;
+  openCheckoutModal: () => void;
   disabled: { [key: string]: boolean };
   price: number;
   purchasable: boolean;
@@ -32,7 +33,11 @@ const BuildControls: FunctionComponent<Props> = props => (
         disabled={props.disabled[control.type]}
       />
     ))}
-    <button className="build-controls__order-btn" disabled={!props.purchasable}>
+    <button
+      className="build-controls__order-btn"
+      disabled={!props.purchasable}
+      onClick={props.openCheckoutModal}
+    >
       ORDER NOW
     </button>
   </div>

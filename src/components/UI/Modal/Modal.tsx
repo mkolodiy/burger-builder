@@ -1,8 +1,25 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, Fragment } from 'react';
 import './Modal.scss';
+import Backdrop from '../Backdrop/Backdrop';
 
-const Modal: FunctionComponent = props => (
-  <div className="modal">{props.children}</div>
-);
+interface Props {
+  display: boolean;
+  onClose: () => void;
+}
+
+const Modal: FunctionComponent<Props> = props => {
+  const styles = {
+    transform: props.display ? 'translateY(0)' : 'translateY(-100vh)',
+    opacity: props.display ? '1' : '0'
+  };
+  return (
+    <Fragment>
+      <Backdrop display={props.display} onClose={props.onClose} />
+      <div className="modal" style={styles}>
+        {props.children}
+      </div>
+    </Fragment>
+  );
+};
 
 export default Modal;

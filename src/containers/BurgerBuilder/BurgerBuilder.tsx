@@ -9,6 +9,7 @@ interface State {
   ingredients: Ingredient[];
   totalPrice: number;
   purchasable: boolean;
+  modalOpened: boolean;
 }
 
 const INGREDIENT_PRICES = {
@@ -27,7 +28,8 @@ class BurgerBuilder extends Component {
       { type: InnerIngredient.BACON, amount: 0 }
     ],
     totalPrice: 4,
-    purchasable: false
+    purchasable: false,
+    modalOpened: false
   };
 
   _addIngredientHandler = (type: InnerIngredient) => {
@@ -75,13 +77,24 @@ class BurgerBuilder extends Component {
     this.setState({ purchasable: sum > 0 });
   };
 
+  _modalOpenedHandler = () => {
+    this.setState({ modalOpened: true });
+  };
+
+  _modalClosedHandler = () => {
+    this.setState({ modalOpened: false });
+  };
+
   render() {
     const disableInfo: { [key: string]: boolean } = {};
     this.state.ingredients.forEach(i => (disableInfo[i.type] = i.amount <= 0));
 
     return (
       <Fragment>
-        <Modal>
+        <Modal
+          display={this.state.modalOpened}
+          onClose={this._modalClosedHandler}
+        >
           <OrderSummary ingredients={this.state.ingredients} />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
@@ -91,6 +104,7 @@ class BurgerBuilder extends Component {
           disabled={disableInfo}
           price={this.state.totalPrice}
           purchasable={this.state.purchasable}
+          openCheckoutModal={this._modalOpenedHandler}
         />
       </Fragment>
     );
