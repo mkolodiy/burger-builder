@@ -22,7 +22,7 @@ interface Props {
 const BuildControls: FunctionComponent<Props> = props => (
   <div className="build-controls">
     <p>
-      Current Price: <strong>{props.price.toFixed(2)}</strong>
+      Current Price: <strong>{props.price}</strong>
     </p>
     {controls.map(control => (
       <BuildControl

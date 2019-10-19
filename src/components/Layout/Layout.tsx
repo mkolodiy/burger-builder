@@ -1,9 +1,10 @@
 import React, { Fragment, FunctionComponent } from 'react';
 import './Layout.scss';
+import Toolbar from '../Toolbar/Toolbar';
 
 const Layout: FunctionComponent = props => (
   <Fragment>
-    <div>Toolbar, SideDrawer, Backdrop</div>
+    <Toolbar />
     <main className="layout__content">{props.children}</main>
   </Fragment>
 );

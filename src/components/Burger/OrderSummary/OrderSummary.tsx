@@ -4,11 +4,9 @@ import Button from '../../UI/Button/Button';
 
 interface Props {
   ingredients: Ingredient[];
-}
-
-interface Props {
   onClose: () => void;
   onContinue: () => void;
+  price: number;
 }
 
 const OrderSummary: FunctionComponent<Props> = props => {
@@ -25,6 +23,9 @@ const OrderSummary: FunctionComponent<Props> = props => {
       <h3>Your Order</h3>
       <p>A delicious burger with the following ingredients:</p>
       <ul>{ingredientSummary}</ul>
+      <p>
+        <strong>Total price: {props.price}</strong>
+      </p>
       <p>Continue to Checkout?</p>
       <Button onClick={props.onClose} type={ButtonType.DANGER}>
         CANCEL

@@ -93,6 +93,8 @@ class BurgerBuilder extends Component {
     const disableInfo: { [key: string]: boolean } = {};
     this.state.ingredients.forEach(i => (disableInfo[i.type] = i.amount <= 0));
 
+    const totalPrice = Number(this.state.totalPrice.toFixed(2));
+
     return (
       <Fragment>
         <Modal
@@ -103,6 +105,7 @@ class BurgerBuilder extends Component {
             ingredients={this.state.ingredients}
             onClose={this._modalClosedHandler}
             onContinue={this._purchaseHandler}
+            price={totalPrice}
           />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
@@ -110,7 +113,7 @@ class BurgerBuilder extends Component {
           addIngredient={this._addIngredientHandler}
           removeIngredient={this._removeIngredientHandler}
           disabled={disableInfo}
-          price={this.state.totalPrice}
+          price={totalPrice}
           purchasable={this.state.purchasable}
           openCheckoutModal={this._modalOpenedHandler}
         />
