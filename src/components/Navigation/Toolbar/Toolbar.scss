@@ -16,3 +16,13 @@
     height: 100%;
   }
 }
+
+.toolbar__logo {
+  height: 80%;
+}
+
+@media (max-width: 499px) {
+  .toolbar__desktop-only {
+    display: none;
+  }
+}
