@@ -2,12 +2,15 @@ import React, { FunctionComponent } from 'react';
 import './Toolbar.scss';
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
+import DrawerToggle from '../SideDrawer/DrawerToggle/DrawerToggle';
 
-interface Props {}
+interface Props {
+  toggleSideDrawer: () => void;
+}
 
 const Toolbar: FunctionComponent<Props> = props => (
   <header className="toolbar">
-    <div>MENU</div>
+    <DrawerToggle onClick={props.toggleSideDrawer} />
     <div className="toolbar__logo">
       <Logo />
     </div>

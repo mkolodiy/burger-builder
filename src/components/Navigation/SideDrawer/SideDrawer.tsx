@@ -1,18 +1,29 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, Fragment } from 'react';
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import './SideDrawer.scss';
+import Backdrop from '../../UI/Backdrop/Backdrop';
 
-const SideDrawer: FunctionComponent = () => {
+interface Props {
+  onClose: () => void;
+  open: boolean;
+}
+
+const SideDrawer: FunctionComponent<Props> = props => {
+  const classes = ['side-drawer', props.open ? 'open' : 'close'].join(' ');
+
   return (
-    <div className="side-drawer">
-      <div className="side-drawer__logo">
-        <Logo />
+    <Fragment>
+      <Backdrop display={props.open} onClose={props.onClose} />
+      <div className={classes}>
+        <div className="side-drawer__logo">
+          <Logo />
+        </div>
+        <nav>
+          <NavigationItems />
+        </nav>
       </div>
-      <nav>
-        <NavigationItems />
-      </nav>
-    </div>
+    </Fragment>
   );
 };
 
