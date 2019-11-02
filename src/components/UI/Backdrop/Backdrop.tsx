@@ -3,7 +3,7 @@ import './Backdrop.scss';
 
 interface Props {
   display: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const Backdrop: FunctionComponent<Props> = props =>

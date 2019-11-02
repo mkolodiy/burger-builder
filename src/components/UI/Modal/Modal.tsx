@@ -4,7 +4,7 @@ import Backdrop from '../Backdrop/Backdrop';
 
 interface Props {
   display: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const Modal: FunctionComponent<Props> = props => {
