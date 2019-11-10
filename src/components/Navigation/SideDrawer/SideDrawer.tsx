@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import './SideDrawer.scss';
@@ -9,7 +9,7 @@ interface Props {
   open: boolean;
 }
 
-const SideDrawer: FunctionComponent<Props> = props => {
+const SideDrawer: FC<Props> = props => {
   const classes = ['side-drawer', props.open ? 'open' : 'close'].join(' ');
 
   return (

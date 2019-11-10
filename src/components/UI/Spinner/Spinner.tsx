@@ -1,8 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import './Spinner.scss';
 
-const Spinner: FunctionComponent = () => (
-  <div className="loader">Loading...</div>
-);
+const Spinner: FC = () => <div className="loader">Loading...</div>;
 
 export default Spinner;

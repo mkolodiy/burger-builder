@@ -1,5 +1,6 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import './NavigationItem.scss';
+import { NavLink } from 'react-router-dom';
 
 interface Props {
   text: string;
@@ -7,11 +8,9 @@ interface Props {
   active?: boolean;
 }
 
-const NavigationItem: FunctionComponent<Props> = props => (
+const NavigationItem: FC<Props> = props => (
   <li className="navigation-item">
-    <a href={props.link} className={props.active ? 'active' : ''}>
-      {props.text}
-    </a>
+    <NavLink to={props.link}>{props.text}</NavLink>
   </li>
 );
 

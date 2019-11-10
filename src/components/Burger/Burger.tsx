@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 import './Burger.scss';
 import { Ingredient, OuterIngredient } from '../../common/Types';
@@ -7,7 +7,7 @@ interface Props {
   ingredients: Ingredient[];
 }
 
-const Burger: FunctionComponent<Props> = props => {
+const Burger: FC<Props> = props => {
   let burgerIngredients = props.ingredients
     .map(i => {
       return [...Array(i.amount)].map((_, index) => (

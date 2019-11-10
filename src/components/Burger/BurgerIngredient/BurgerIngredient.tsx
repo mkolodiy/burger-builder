@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import './BurgerIngredient.scss';
 import { OuterIngredient, InnerIngredient } from '../../../common/Types';
 
@@ -6,7 +6,7 @@ interface Props {
   type: string;
 }
 
-const BurgerIngredient: FunctionComponent<Props> = props => {
+const BurgerIngredient: FC<Props> = props => {
   let ingredient = null;
 
   switch (props.type) {

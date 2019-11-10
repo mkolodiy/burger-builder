@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import './BuildControls.scss';
 import BuildControl from './BuildControl/BuildControl';
 import { InnerIngredient } from '../../../common/Types';
@@ -19,7 +19,7 @@ interface Props {
   purchasable: boolean;
 }
 
-const BuildControls: FunctionComponent<Props> = props => (
+const BuildControls: FC<Props> = props => (
   <div className="build-controls">
     <p>
       Current Price: <strong>{props.price}</strong>

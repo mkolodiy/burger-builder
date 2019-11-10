@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import { ButtonType } from '../../../common/Types';
 import './Button.scss';
 
@@ -7,7 +7,7 @@ interface Props {
   type: ButtonType;
 }
 
-const Button: FunctionComponent<Props> = props => {
+const Button: FC<Props> = props => {
   const classes: string = [
     'button',
     props.type === ButtonType.SUCCESS ? 'button--success' : 'button--danger'

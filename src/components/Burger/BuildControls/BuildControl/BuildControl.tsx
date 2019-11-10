@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import './BuildControl.scss';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   disabled: boolean;
 }
 
-const BuildControl: FunctionComponent<Props> = props => (
+const BuildControl: FC<Props> = props => (
   <div className="build-control">
     <div className="build-control__label">{props.label}</div>
     <button

@@ -1,13 +1,13 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import Layout from './containers/Layout/Layout';
-import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 
 const App: React.FC = () => {
   return (
     <div>
-      <Layout>
-        <BurgerBuilder />
-      </Layout>
+      <BrowserRouter>
+        <Layout />
+      </BrowserRouter>
     </div>
   );
 };

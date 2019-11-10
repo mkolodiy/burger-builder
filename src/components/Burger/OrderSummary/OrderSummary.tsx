@@ -1,4 +1,4 @@
-import React, { FunctionComponent, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { Ingredient, ButtonType } from '../../../common/Types';
 import Button from '../../UI/Button/Button';
 
@@ -9,7 +9,7 @@ interface Props {
   price: number;
 }
 
-const OrderSummary: FunctionComponent<Props> = props => {
+const OrderSummary: FC<Props> = props => {
   const ingredientSummary = props.ingredients.map(i => {
     return (
       <li key={i.type}>

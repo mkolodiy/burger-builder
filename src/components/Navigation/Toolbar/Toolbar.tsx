@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FC } from 'react';
 import './Toolbar.scss';
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
@@ -8,7 +8,7 @@ interface Props {
   toggleSideDrawer: () => void;
 }
 
-const Toolbar: FunctionComponent<Props> = props => (
+const Toolbar: FC<Props> = props => (
   <header className="toolbar">
     <DrawerToggle onClick={props.toggleSideDrawer} />
     <div className="toolbar__logo">
