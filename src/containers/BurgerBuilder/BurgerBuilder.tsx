@@ -7,6 +7,7 @@ import { InnerIngredient, Ingredient } from '../../common/Types';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import { RouteComponentProps } from 'react-router';
 
 interface State {
   ingredients: Ingredient[];
@@ -17,6 +18,8 @@ interface State {
   error: boolean;
 }
 
+type Props = RouteComponentProps;
+
 const INGREDIENT_PRICES = {
   salad: 0.5,
   bacon: 0.4,
@@ -24,7 +27,7 @@ const INGREDIENT_PRICES = {
   meat: 0.7
 };
 
-class BurgerBuilder extends Component {
+class BurgerBuilder extends Component<Props> {
   state: State = {
     ingredients: [],
     totalPrice: 4,
@@ -97,25 +100,28 @@ class BurgerBuilder extends Component {
   };
 
   _purchaseHandler = () => {
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Maksym Kolodiy',
-        address: {
-          street: 'Teststreet 1',
-          zipCode: '12345',
-          country: 'Germany'
-        },
-        email: 'test@test.com',
-        deliveryMethod: 'fastest'
-      }
-    };
-    axios
-      .post('/orders.json', order)
-      .then(() => this.setState({ loading: false, modalOpened: false }))
-      .catch(() => this.setState({ loading: false, modalOpened: false }));
+    // this.setState({ loading: true });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Maksym Kolodiy',
+    //     address: {
+    //       street: 'Teststreet 1',
+    //       zipCode: '12345',
+    //       country: 'Germany'
+    //     },
+    //     email: 'test@test.com',
+    //     deliveryMethod: 'fastest'
+    //   }
+    // };
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(() => this.setState({ loading: false, modalOpened: false }))
+    //   .catch(() => this.setState({ loading: false, modalOpened: false }));
+    this.props.history.push('/checkout', {
+      ingredients: this.state.ingredients
+    });
   };
 
   _renderOrderSummary = (totalPrice: number) => (

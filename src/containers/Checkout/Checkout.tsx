@@ -1,37 +1,26 @@
 import React, { Component } from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
-import { Ingredient, InnerIngredient } from '../../common/Types';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface State {
-  ingredients: Ingredient[];
-}
+type Props = RouteComponentProps;
 
-class Checkout extends Component {
-  state: State = {
-    ingredients: [
-      {
-        type: InnerIngredient.SALAD,
-        amount: 2
-      },
-      {
-        type: InnerIngredient.BACON,
-        amount: 1
-      },
-      {
-        type: InnerIngredient.CHEESE,
-        amount: 1
-      },
-      {
-        type: InnerIngredient.MEAT,
-        amount: 2
-      }
-    ]
+class Checkout extends Component<Props> {
+  _onContinue = () => {
+    this.props.history.push('/checkout/contact-data');
+  };
+
+  _onCancel = () => {
+    this.props.history.goBack();
   };
 
   render() {
     return (
       <div>
-        <CheckoutSummary ingredients={this.state.ingredients} />
+        <CheckoutSummary
+          ingredients={this.props.location.state.ingredients}
+          onContinue={this._onContinue}
+          onCancel={this._onCancel}
+        />
       </div>
     );
   }

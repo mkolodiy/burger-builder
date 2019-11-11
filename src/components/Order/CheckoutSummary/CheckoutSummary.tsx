@@ -6,6 +6,8 @@ import Button from '../../UI/Button/Button';
 
 interface Props {
   ingredients: Ingredient[];
+  onContinue: () => void;
+  onCancel: () => void;
 }
 
 const CheckoutSummary: FC<Props> = props => {
@@ -16,10 +18,10 @@ const CheckoutSummary: FC<Props> = props => {
         <Burger ingredients={props.ingredients} />
       </div>
       <div>
-        <Button type={ButtonType.DANGER} onClick={() => undefined}>
+        <Button type={ButtonType.DANGER} onClick={props.onCancel}>
           Cancel
         </Button>
-        <Button type={ButtonType.SUCCESS} onClick={() => undefined}>
+        <Button type={ButtonType.SUCCESS} onClick={props.onContinue}>
           Continue
         </Button>
       </div>

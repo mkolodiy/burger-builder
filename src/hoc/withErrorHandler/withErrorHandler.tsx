@@ -1,16 +1,19 @@
 import React, { Fragment, Component, ComponentClass } from 'react';
 import Modal from '../../components/UI/Modal/Modal';
 import { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
+import { RouteComponentProps } from 'react-router';
 
 interface State {
   error: any;
 }
 
+type Props = RouteComponentProps;
+
 const withErrorHandler = (
-  WrappedComponent: ComponentClass,
+  WrappedComponent: ComponentClass<Props>,
   axios: AxiosInstance
 ) => {
-  return class extends Component {
+  return class extends Component<Props> {
     requestInterceptor: number;
     responseInterceptor: number;
 
@@ -18,7 +21,7 @@ const withErrorHandler = (
       error: null
     };
 
-    constructor(props: any) {
+    constructor(props: Props) {
       super(props);
       this.requestInterceptor = axios.interceptors.request.use(
         (request: AxiosRequestConfig) => {
