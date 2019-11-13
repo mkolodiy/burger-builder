@@ -7,7 +7,7 @@ const controls = [
   { label: 'Meat', type: InnerIngredient.MEAT },
   { label: 'Cheese', type: InnerIngredient.CHEESE },
   { label: 'Salad', type: InnerIngredient.SALAD },
-  { label: 'Meat', type: InnerIngredient.BACON }
+  { label: 'Bacon', type: InnerIngredient.BACON }
 ];
 
 interface Props {

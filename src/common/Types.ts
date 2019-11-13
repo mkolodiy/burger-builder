@@ -19,3 +19,10 @@ export enum ButtonType {
   SUCCESS,
   DANGER
 }
+
+export interface IOrder {
+  id: string;
+  customer: {};
+  ingredients: Ingredient[];
+  price: number;
+}

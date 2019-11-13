@@ -6,11 +6,14 @@ interface Props {
   text: string;
   link: string;
   active?: boolean;
+  exact?: boolean;
 }
 
 const NavigationItem: FC<Props> = props => (
   <li className="navigation-item">
-    <NavLink to={props.link}>{props.text}</NavLink>
+    <NavLink exact={props.exact} to={props.link}>
+      {props.text}
+    </NavLink>
   </li>
 );
 

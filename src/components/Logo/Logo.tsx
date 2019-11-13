@@ -1,10 +1,13 @@
 import React, { FC } from 'react';
 import burgerLogo from '../../assets/images/burger-logo.png';
 import './Logo.scss';
+import { Link } from 'react-router-dom';
 
 const Logo: FC = () => (
   <div className="logo">
-    <img src={burgerLogo} alt="MyBurger" />
+    <Link to="/">
+      <img src={burgerLogo} alt="MyBurger" />
+    </Link>
   </div>
 );
 

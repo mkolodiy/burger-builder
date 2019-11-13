@@ -5,7 +5,8 @@ import './NavigationItems.scss';
 
 const NavigationItems: FunctionComponent = () => (
   <ul className="navigation-items">
-    <NavigationItem text="Burger Builder" link="/" active />
+    <NavigationItem exact text="Burger Builder" link="/" />
+    <NavigationItem text="Orders" link="/orders" />
   </ul>
 );
 
