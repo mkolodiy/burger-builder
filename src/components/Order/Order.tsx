@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import './Order.scss';
-import { Ingredient, InnerIngredient } from '../../common/Types';
+import { Ingredient } from '../../common/Types';
 
 interface Props {
   ingredients: Ingredient[];

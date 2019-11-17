@@ -26,3 +26,8 @@ export interface IOrder {
   ingredients: Ingredient[];
   price: number;
 }
+
+export enum InputType {
+  INPUT = 'input',
+  TEXTAREA = 'textarea'
+}
