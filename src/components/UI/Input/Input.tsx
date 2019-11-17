@@ -1,28 +1,51 @@
 import React, { FC } from 'react';
 import { InputType } from '../../../common/Types';
+import './Input.scss';
 
 interface Props {
-  inputType: InputType;
-  label: string;
+  label: string | undefined;
+  elementType: InputType;
+  elementConfig: {};
+  elementValue: any;
 }
 
 const Input: FC<Props> = props => {
   let inputElement = null;
-  switch (props.inputType) {
+  switch (props.elementType) {
     case InputType.INPUT:
-      inputElement = <input {...props} />;
+      inputElement = (
+        <input
+          className="input__element"
+          {...props.elementConfig}
+          value={props.elementValue}
+        />
+      );
       break;
     case InputType.TEXTAREA:
-      inputElement = <textarea {...props} />;
+      inputElement = (
+        <textarea
+          className="input__element"
+          {...props.elementConfig}
+          value={props.elementValue}
+        />
+      );
       break;
     default:
-      inputElement = <input {...props} />;
+      inputElement = (
+        <input
+          className="input__element"
+          {...props.elementConfig}
+          value={props.elementValue}
+        />
+      );
   }
 
   return (
-    <div>
-      <label>{props.label}</label>
+    <div className="input">
+      <label className="input__label">{props.label}</label>
       {inputElement}
     </div>
   );
 };
+
+export default Input;

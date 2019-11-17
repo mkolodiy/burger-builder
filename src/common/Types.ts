@@ -29,5 +29,6 @@ export interface IOrder {
 
 export enum InputType {
   INPUT = 'input',
-  TEXTAREA = 'textarea'
+  TEXTAREA = 'textarea',
+  SELECT = 'select'
 }

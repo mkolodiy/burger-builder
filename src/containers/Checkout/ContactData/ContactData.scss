@@ -1,7 +1,6 @@
 .contact-data {
   margin: 20px auto;
   width: 80%;
-  height: 300px;
   text-align: center;
   border: 1px solid #eee;
   padding: 10px;
@@ -14,6 +13,7 @@
   form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     input {
       margin: 10px 0;
