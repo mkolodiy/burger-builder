@@ -24,6 +24,7 @@ interface ElementConfig {
 }
 
 interface Element {
+  label: string;
   elementType: InputType;
   elementConfig: ElementConfig;
   elementValue: string;
@@ -41,46 +42,52 @@ class ContactData extends Component<Props> {
   state: State = {
     orderForm: {
       name: {
+        label: 'Name',
         elementType: InputType.INPUT,
         elementConfig: {
           type: 'text',
-          placeholder: 'Your name'
+          placeholder: 'Enter name'
         },
         elementValue: ''
       },
       street: {
+        label: 'Street',
         elementType: InputType.INPUT,
         elementConfig: {
           type: 'text',
-          placeholder: 'Your street'
+          placeholder: 'Enter street'
         },
         elementValue: ''
       },
       zipCode: {
+        label: 'ZIP code',
         elementType: InputType.INPUT,
         elementConfig: {
           type: 'text',
-          placeholder: 'Your zip code'
+          placeholder: 'Enter zip code'
         },
         elementValue: ''
       },
       country: {
+        label: 'Country',
         elementType: InputType.INPUT,
         elementConfig: {
           type: 'text',
-          placeholder: 'Your country'
+          placeholder: 'Enter country'
         },
         elementValue: ''
       },
       email: {
+        label: 'Email',
         elementType: InputType.INPUT,
         elementConfig: {
           type: 'email',
-          placeholder: 'Your email'
+          placeholder: 'Enter email'
         },
         elementValue: ''
       },
       deliveryMethod: {
+        label: 'Delivery method',
         elementType: InputType.SELECT,
         elementConfig: {
           options: [
@@ -88,7 +95,7 @@ class ContactData extends Component<Props> {
             { value: 'cheapest', displayValue: 'Cheapest' }
           ]
         },
-        elementValue: ''
+        elementValue: 'fastest'
       }
     },
     loading: false,
@@ -97,17 +104,36 @@ class ContactData extends Component<Props> {
 
   _orderHandler = (event: SyntheticEvent) => {
     event.preventDefault();
-
     this.setState({ loading: true });
+    const formData: { [key: string]: string } = {};
+
+    for (let key in this.state.orderForm) {
+      formData[key] = this.state.orderForm[key].elementValue;
+    }
+
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
-      customer: {}
+      orderData: formData
     };
     axios
       .post('/orders.json', order)
       .then(() => this.setState({ loading: false, loaded: true }))
       .catch(() => this.setState({ loading: false }));
+  };
+
+  _onChangeHandler = (event: any, inputIdentifier: string) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm
+    };
+    const updatedFormElement = {
+      ...updatedOrderForm[inputIdentifier]
+    };
+    updatedFormElement.elementValue = event.target.value;
+    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    this.setState({
+      orderForm: updatedOrderForm
+    });
   };
 
   _renderForm = () => {
@@ -126,7 +152,8 @@ class ContactData extends Component<Props> {
               elementValue={formElement.config.elementValue}
               elementType={formElement.config.elementType}
               elementConfig={formElement.config.elementConfig}
-              label={formElement.config.elementConfig.placeholder}
+              label={formElement.config.label}
+              onChange={event => this._onChangeHandler(event, formElement.id)}
             />
           ))}
           <Button
