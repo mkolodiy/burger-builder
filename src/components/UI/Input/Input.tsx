@@ -18,16 +18,26 @@ interface Props {
   elementType: InputType;
   elementConfig: ElementConfig;
   elementValue: string;
+  valid: boolean;
+  shouldValidate: boolean;
   onChange: (event: any) => void;
 }
 
 const Input: FC<Props> = props => {
   let inputElement = null;
+  const classes = ['input__element'];
+
+  if (!props.valid && props.shouldValidate) {
+    classes.push('input__element--invalid');
+  }
+
+  const classesAsString = classes.join(' ');
+
   switch (props.elementType) {
     case InputType.INPUT:
       inputElement = (
         <input
-          className="input__element"
+          className={classesAsString}
           {...props.elementConfig}
           value={props.elementValue}
           onChange={props.onChange}
@@ -37,7 +47,7 @@ const Input: FC<Props> = props => {
     case InputType.TEXTAREA:
       inputElement = (
         <textarea
-          className="input__element"
+          className={classesAsString}
           {...props.elementConfig}
           value={props.elementValue}
           onChange={props.onChange}
@@ -47,7 +57,7 @@ const Input: FC<Props> = props => {
     case InputType.SELECT:
       inputElement = (
         <select
-          className="input__element"
+          className={classesAsString}
           value={props.elementValue}
           onChange={props.onChange}
         >
@@ -63,7 +73,7 @@ const Input: FC<Props> = props => {
     default:
       inputElement = (
         <input
-          className="input__element"
+          className={classesAsString}
           {...props.elementConfig}
           value={props.elementValue}
           onChange={props.onChange}

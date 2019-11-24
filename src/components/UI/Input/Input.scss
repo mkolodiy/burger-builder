@@ -24,4 +24,9 @@
       background-color: #ccc;
     }
   }
+
+  .input__element--invalid {
+    border: 1px solid red;
+    background-color: salmon;
+  }
 }
