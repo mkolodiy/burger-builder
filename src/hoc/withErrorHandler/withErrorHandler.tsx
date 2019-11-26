@@ -7,12 +7,9 @@ interface State {
   error: any;
 }
 
-type Props = RouteComponentProps;
+const withErrorHandler = <P extends object>(WrappedComponent: ComponentClass<P>, axios: AxiosInstance) => {
+  type Props = P & RouteComponentProps;
 
-const withErrorHandler = (
-  WrappedComponent: ComponentClass<Props>,
-  axios: AxiosInstance
-) => {
   return class extends Component<Props> {
     requestInterceptor: number;
     responseInterceptor: number;
@@ -23,12 +20,10 @@ const withErrorHandler = (
 
     constructor(props: Props) {
       super(props);
-      this.requestInterceptor = axios.interceptors.request.use(
-        (request: AxiosRequestConfig) => {
-          this.setState({ error: null });
-          return request;
-        }
-      );
+      this.requestInterceptor = axios.interceptors.request.use((request: AxiosRequestConfig) => {
+        this.setState({ error: null });
+        return request;
+      });
       this.responseInterceptor = axios.interceptors.response.use(
         (response: AxiosResponse<any>) => response,
         error => this.setState({ error: error })
@@ -47,10 +42,7 @@ const withErrorHandler = (
     render() {
       return (
         <Fragment>
-          <Modal
-            display={this.state.error !== null}
-            onClose={this._onClickHandler}
-          >
+          <Modal display={this.state.error !== null} onClose={this._onClickHandler}>
             {this.state.error !== null ? this.state.error!.message : null}
           </Modal>
           <WrappedComponent {...this.props} />
