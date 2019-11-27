@@ -6,11 +6,8 @@ import { ButtonType, Ingredient, InputType } from '../../../common/Types';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { RouteComponentProps } from 'react-router';
 import Input from '../../../components/UI/Input/Input';
-
-interface ComponentProps {
-  ingredients: Ingredient[];
-  totalPrice: number;
-}
+import { ReduxState } from '../../../store/reducer';
+import { connect } from 'react-redux';
 
 interface ElementConfigOptions {
   value: string;
@@ -44,7 +41,12 @@ interface State {
   formValid: boolean;
 }
 
-type Props = ComponentProps & RouteComponentProps;
+interface ReduxProps {
+  ingredients: Ingredient[];
+  totalPrice: number;
+}
+
+type Props = ReduxProps & RouteComponentProps;
 
 class ContactData extends Component<Props> {
   state: State = {
@@ -176,10 +178,7 @@ class ContactData extends Component<Props> {
     updatedFormElement.elementValue = event.target.value;
     const validation = updatedFormElement.validation;
     if (validation) {
-      updatedFormElement.valid = this._checkValidity(
-        updatedFormElement.elementValue,
-        validation
-      );
+      updatedFormElement.valid = this._checkValidity(updatedFormElement.elementValue, validation);
     }
     updatedFormElement.touched = true;
     updatedOrderForm[inputIdentifier] = updatedFormElement;
@@ -214,18 +213,11 @@ class ContactData extends Component<Props> {
               elementConfig={formElement.config.elementConfig}
               label={formElement.config.label}
               valid={!!formElement.config.valid}
-              shouldValidate={
-                !!formElement.config.validation && !!formElement.config.touched
-              }
+              shouldValidate={!!formElement.config.validation && !!formElement.config.touched}
               onChange={event => this._onChangeHandler(event, formElement.id)}
             />
           ))}
-          <Button
-            type={ButtonType.SUCCESS}
-            disabled={
-              this.props.ingredients.length === 0 || !this.state.formValid
-            }
-          >
+          <Button type={ButtonType.SUCCESS} disabled={this.props.ingredients.length === 0 || !this.state.formValid}>
             Order
           </Button>
         </form>
@@ -236,10 +228,7 @@ class ContactData extends Component<Props> {
   _renderLoaded = () => (
     <>
       <h1>Success</h1>
-      <Button
-        type={ButtonType.SUCCESS}
-        onClick={() => this.props.history.push('/')}
-      >
+      <Button type={ButtonType.SUCCESS} onClick={() => this.props.history.push('/')}>
         Go back
       </Button>
     </>
@@ -258,4 +247,11 @@ class ContactData extends Component<Props> {
   }
 }
 
-export default ContactData;
+const mapStateToProps = (state: ReduxState) => {
+  return {
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice
+  };
+};
+
+export default connect(mapStateToProps)(ContactData);

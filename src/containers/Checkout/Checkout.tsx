@@ -3,31 +3,21 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import { RouteComponentProps, Route } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 import { Ingredient } from '../../common/Types';
+import { connect } from 'react-redux';
+import { ReduxState } from '../../store/reducer';
 
 interface State {
   ingredients: Ingredient[];
   totalPrice: number;
 }
 
-type Props = RouteComponentProps;
+interface ReduxProps {
+  ingredients: Ingredient[];
+}
+
+type Props = ReduxProps & RouteComponentProps;
 
 class Checkout extends Component<Props> {
-  state: State = {
-    ingredients: [],
-    totalPrice: 0
-  };
-
-  componentDidMount() {
-    const passedState = this.props.location.state;
-
-    if (passedState) {
-      this.setState({
-        ingredients: passedState.ingredients,
-        totalPrice: passedState.totalPrice
-      });
-    }
-  }
-
   _onContinue = () => {
     this.props.history.push('/checkout/contact-data');
   };
@@ -39,24 +29,17 @@ class Checkout extends Component<Props> {
   render() {
     return (
       <div>
-        <CheckoutSummary
-          ingredients={this.state.ingredients}
-          onContinue={this._onContinue}
-          onCancel={this._onCancel}
-        />
-        <Route
-          path={`${this.props.match.url}/contact-data`}
-          render={props => (
-            <ContactData
-              {...props}
-              ingredients={this.state.ingredients}
-              totalPrice={this.state.totalPrice}
-            />
-          )}
-        />
+        <CheckoutSummary ingredients={this.props.ingredients} onContinue={this._onContinue} onCancel={this._onCancel} />
+        <Route path={`${this.props.match.url}/contact-data`} component={ContactData} />} />
       </div>
     );
   }
 }
 
-export default Checkout;
+const mapStateToProps = (state: ReduxState) => {
+  return {
+    ingredients: state.ingredients
+  };
+};
+
+export default connect(mapStateToProps)(Checkout);

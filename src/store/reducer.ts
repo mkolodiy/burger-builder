@@ -11,6 +11,13 @@ export interface ReduxState {
   totalPrice: number;
 }
 
+const INGREDIENT_PRICES = {
+  salad: 0.5,
+  bacon: 0.4,
+  cheese: 1.3,
+  meat: 0.7
+};
+
 const initialState: ReduxState = {
   ingredients: [
     {
@@ -50,12 +57,14 @@ const reducer = (state: ReduxState = initialState, action: Action) => {
     case actionTypes.ADD_INGREDIENT:
       return {
         ...state,
-        ingredients: handleIngredients(state.ingredients, action.ingredientType, true)
+        ingredients: handleIngredients(state.ingredients, action.ingredientType, true),
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientType]
       };
     case actionTypes.REMOVE_INGREDIENT:
       return {
         ...state,
-        ingredients: handleIngredients(state.ingredients, action.ingredientType, false)
+        ingredients: handleIngredients(state.ingredients, action.ingredientType, false),
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientType]
       };
     default:
       return state;

@@ -14,8 +14,6 @@ import * as actionTypes from '../../store/actions';
 import { Dispatch } from 'redux';
 
 interface State {
-  totalPrice: number;
-  purchasable: boolean;
   modalOpened: boolean;
   loading: boolean;
   error: boolean;
@@ -23,23 +21,15 @@ interface State {
 
 interface ReduxProps {
   ingredients: Ingredient[];
+  totalPrice: number;
   actionAddIngredient: (ingredientType: InnerIngredient) => void;
   actionRemoveIngredient: (ingredientType: InnerIngredient) => void;
 }
 
 type Props = RouteComponentProps & ReduxProps;
 
-const INGREDIENT_PRICES = {
-  salad: 0.5,
-  bacon: 0.4,
-  cheese: 1.3,
-  meat: 0.7
-};
-
 class BurgerBuilder extends Component<Props> {
   state: State = {
-    totalPrice: 4,
-    purchasable: false,
     modalOpened: false,
     loading: false,
     error: false
@@ -54,47 +44,9 @@ class BurgerBuilder extends Component<Props> {
   //     .catch(error => this.setState({ error: true }));
   // }
 
-  // _addIngredientHandler = (type: InnerIngredient) => {
-  //   const index = this.state.ingredients.findIndex(i => i.type === type);
-  //   const ingredient = this.state.ingredients[index];
-  //   const updatedCount = ingredient.amount + 1;
-  //   const updatedIngredients = [...this.state.ingredients];
-  //   updatedIngredients[index] = {
-  //     ...ingredient,
-  //     amount: updatedCount
-  //   };
-  //   const priceAddition = INGREDIENT_PRICES[type];
-  //   const updatedTotalPrice = this.state.totalPrice + priceAddition;
-
-  //   this.setState({
-  //     ingredients: updatedIngredients,
-  //     totalPrice: updatedTotalPrice
-  //   });
-  //   this._updatePurchase(updatedIngredients);
-  // };
-
-  // _removeIngredientHandler = (type: InnerIngredient) => {
-  //   const index = this.state.ingredients.findIndex(i => i.type === type);
-  //   const ingredient = this.state.ingredients[index];
-  //   const updatedCount = ingredient.amount - 1;
-  //   const updatedIngredients = [...this.state.ingredients];
-  //   updatedIngredients[index] = {
-  //     ...ingredient,
-  //     amount: updatedCount
-  //   };
-  //   const priceAddition = INGREDIENT_PRICES[type];
-  //   const updatedTotalPrice = this.state.totalPrice - priceAddition;
-
-  //   this.setState({
-  //     ingredients: updatedIngredients,
-  //     totalPrice: updatedTotalPrice
-  //   });
-  //   this._updatePurchase(updatedIngredients);
-  // };
-
-  _updatePurchase = (ingredients: Ingredient[]) => {
-    const sum = ingredients.map(i => i.amount).reduce((sum, value) => sum + value, 0);
-    this.setState({ purchasable: sum > 0 });
+  _isPurchasable = () => {
+    const sum = this.props.ingredients.map(i => i.amount).reduce((sum, value) => sum + value, 0);
+    return sum > 0;
   };
 
   _modalOpenedHandler = () => {
@@ -106,10 +58,7 @@ class BurgerBuilder extends Component<Props> {
   };
 
   _purchaseHandler = () => {
-    this.props.history.push('/checkout', {
-      ingredients: this.props.ingredients,
-      totalPrice: this.state.totalPrice
-    });
+    this.props.history.push('/checkout');
   };
 
   _renderOrderSummary = (totalPrice: number) => (
@@ -124,7 +73,7 @@ class BurgerBuilder extends Component<Props> {
         removeIngredient={this.props.actionRemoveIngredient}
         disabled={disableInfo}
         price={totalPrice}
-        purchasable={this.state.purchasable}
+        purchasable={this._isPurchasable()}
         openCheckoutModal={this._modalOpenedHandler}
       />
     </Fragment>
@@ -133,7 +82,7 @@ class BurgerBuilder extends Component<Props> {
   render() {
     const disableInfo: { [key: string]: boolean } = {};
     this.props.ingredients.forEach(i => (disableInfo[i.type] = i.amount <= 0));
-    const totalPrice = Number(this.state.totalPrice.toFixed(2));
+    const totalPrice = Number(this.props.totalPrice.toFixed(2));
 
     let orderSummary = this._renderOrderSummary(totalPrice);
     if (this.state.loading) {
@@ -158,7 +107,8 @@ class BurgerBuilder extends Component<Props> {
 
 const mapStateToProps = (state: ReduxState) => {
   return {
-    ingredients: state.ingredients
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice
   };
 };
 
