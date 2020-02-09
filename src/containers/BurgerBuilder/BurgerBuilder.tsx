@@ -3,46 +3,41 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
-import { InnerIngredient, Ingredient } from '../../common/Types';
+import { Ingredient } from '../../common/Types';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { ReduxState } from '../../store/reducer';
-import * as actionTypes from '../../store/actions';
-import { Dispatch } from 'redux';
+import { ReduxState } from '../../store/reducers/burgerBuilderReducer';
+import { actionAddIngredient, actionRemoveIngredient, actionInitIngredients } from '../../store/actions';
 
 interface State {
   modalOpened: boolean;
-  loading: boolean;
-  error: boolean;
 }
 
 interface ReduxProps {
   ingredients: Ingredient[];
   totalPrice: number;
-  actionAddIngredient: (ingredientType: InnerIngredient) => void;
-  actionRemoveIngredient: (ingredientType: InnerIngredient) => void;
+  error: boolean;
 }
 
-type Props = RouteComponentProps & ReduxProps;
+interface DispatchProps {
+  actionAddIngredient: typeof actionAddIngredient;
+  actionRemoveIngredient: typeof actionRemoveIngredient;
+  actionInitIngredients: typeof actionInitIngredients;
+}
 
-class BurgerBuilder extends Component<Props> {
+type Props = RouteComponentProps & ReduxProps & DispatchProps;
+
+class BurgerBuilder extends Component<Props, State> {
   state: State = {
-    modalOpened: false,
-    loading: false,
-    error: false
+    modalOpened: false
   };
 
-  // componentDidMount() {
-  //   axios
-  //     .get('/ingredients.json')
-  //     .then(response => {
-  //       this.setState({ ingredients: response.data });
-  //     })
-  //     .catch(error => this.setState({ error: true }));
-  // }
+  componentDidMount() {
+    this.props.actionInitIngredients();
+  }
 
   _isPurchasable = () => {
     const sum = this.props.ingredients.map(i => i.amount).reduce((sum, value) => sum + value, 0);
@@ -85,9 +80,8 @@ class BurgerBuilder extends Component<Props> {
     const totalPrice = Number(this.props.totalPrice.toFixed(2));
 
     let orderSummary = this._renderOrderSummary(totalPrice);
-    if (this.state.loading) {
-      orderSummary = this.state.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
-    }
+
+    // orderSummary = this.props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
 
     let burger = <Spinner />;
     if (this.props.ingredients.length !== 0) {
@@ -108,15 +102,15 @@ class BurgerBuilder extends Component<Props> {
 const mapStateToProps = (state: ReduxState) => {
   return {
     ingredients: state.ingredients,
-    totalPrice: state.totalPrice
+    totalPrice: state.totalPrice,
+    error: state.error
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    actionAddIngredient: (ingredientType: InnerIngredient) => dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientType }),
-    actionRemoveIngredient: (ingredientType: InnerIngredient) => dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientType })
-  };
+const mapDispatchToProps = {
+  actionAddIngredient,
+  actionRemoveIngredient,
+  actionInitIngredients
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

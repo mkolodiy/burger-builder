@@ -4,7 +4,7 @@ import { RouteComponentProps, Route } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 import { Ingredient } from '../../common/Types';
 import { connect } from 'react-redux';
-import { ReduxState } from '../../store/reducer';
+import { ReduxState } from '../../store/reducers/burgerBuilderReducer';
 
 interface State {
   ingredients: Ingredient[];
@@ -30,7 +30,7 @@ class Checkout extends Component<Props> {
     return (
       <div>
         <CheckoutSummary ingredients={this.props.ingredients} onContinue={this._onContinue} onCancel={this._onCancel} />
-        <Route path={`${this.props.match.url}/contact-data`} component={ContactData} />} />
+        <Route path={`${this.props.match.url}/contact-data`} component={ContactData} />
       </div>
     );
   }

@@ -6,7 +6,7 @@ import { ButtonType, Ingredient, InputType } from '../../../common/Types';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { RouteComponentProps } from 'react-router';
 import Input from '../../../components/UI/Input/Input';
-import { ReduxState } from '../../../store/reducer';
+import { ReduxState } from '../../../store/reducers/burgerBuilderReducer';
 import { connect } from 'react-redux';
 
 interface ElementConfigOptions {
@@ -187,8 +187,6 @@ class ContactData extends Component<Props> {
     for (let inputIdentifier in updatedOrderForm) {
       formValid = !!updatedOrderForm[inputIdentifier].valid && formValid;
     }
-
-    console.log(formValid);
     this.setState({
       orderForm: updatedOrderForm,
       formValid
