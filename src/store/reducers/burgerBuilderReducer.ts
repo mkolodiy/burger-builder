@@ -1,9 +1,8 @@
-import * as actionTypes from '../actions/actionTypes';
+import { ActionType, getType, ActionStatus } from '../utils/actionUtils';
 import { Ingredient, InnerIngredient } from '../../common/Types';
-import { combineReducers } from 'redux';
 import { LocalAction, ThunkAction } from '../utils/actionUtils';
 
-export interface ReduxState {
+export interface GeneralState {
   ingredients: Ingredient[];
   totalPrice: number;
   error: boolean;
@@ -30,38 +29,41 @@ const handleIngredients = (ingredients: Ingredient[], type: InnerIngredient, inc
 
 const ingredients = (state: Ingredient[] = [], action: ThunkAction<string, Ingredient[] | any>) => {
   switch (action.type) {
-    case actionTypes.ADD_INGREDIENT:
+    case ActionType.ADD_INGREDIENT:
       return handleIngredients(state, action.payload!, true);
-    case actionTypes.REMOVE_INGREDIENT:
+    case ActionType.REMOVE_INGREDIENT:
       return handleIngredients(state, action.payload!, false);
-    case actionTypes.SET_INGREDIENTS:
+    case getType(ActionType.SET_INGREDIENTS, ActionStatus.SUCCESS):
       return action.payload || [];
+    default:
+      return state;
   }
-  return state;
 };
 
 const totalPrice = (state: number = 4, action: ThunkAction<string, InnerIngredient>) => {
   switch (action.type) {
-    case actionTypes.ADD_INGREDIENT:
+    case ActionType.ADD_INGREDIENT:
       return state + INGREDIENT_PRICES[action.payload!];
-    case actionTypes.REMOVE_INGREDIENT:
+    case ActionType.REMOVE_INGREDIENT:
       return state - INGREDIENT_PRICES[action.payload!];
+    default:
+      return state;
   }
-  return state;
 };
 
-const error = (state: boolean = false, action: LocalAction<string, boolean>) => {
+const error = (state: boolean = false, action: LocalAction<string, boolean | any>) => {
   switch (action.type) {
-    case actionTypes.SET_ERROR:
+    case ActionType.SET_ERROR:
       return action.payload || false;
+    case getType(ActionType.SET_INGREDIENTS, ActionStatus.FAILURE):
+      return true;
+    default:
+      return state;
   }
-  return state;
 };
 
-const burgerBuilderReducer = combineReducers<ReduxState>({
+export default {
   ingredients,
   totalPrice,
   error
-});
-
-export default burgerBuilderReducer;
+};

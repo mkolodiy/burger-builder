@@ -6,8 +6,11 @@ import { ButtonType, Ingredient, InputType } from '../../../common/Types';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import { RouteComponentProps } from 'react-router';
 import Input from '../../../components/UI/Input/Input';
-import { ReduxState } from '../../../store/reducers/burgerBuilderReducer';
+import { ReduxState } from '../../../store/reducers';
 import { connect } from 'react-redux';
+import { actionOrderBurger } from '../../../store/actions';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import { Order } from '../../../store/reducers/orderReducer';
 
 interface ElementConfigOptions {
   value: string;
@@ -36,7 +39,6 @@ interface Element {
 
 interface State {
   orderForm: { [key: string]: Element };
-  loading: boolean;
   loaded: boolean;
   formValid: boolean;
 }
@@ -44,9 +46,14 @@ interface State {
 interface ReduxProps {
   ingredients: Ingredient[];
   totalPrice: number;
+  placingOrder: boolean;
 }
 
-type Props = ReduxProps & RouteComponentProps;
+interface DispatchProps {
+  actionOrderBurger: typeof actionOrderBurger;
+}
+
+type Props = ReduxProps & DispatchProps & RouteComponentProps;
 
 class ContactData extends Component<Props> {
   state: State = {
@@ -134,29 +141,25 @@ class ContactData extends Component<Props> {
         valid: true
       }
     },
-    loading: false,
     loaded: false,
     formValid: false
   };
 
   _orderHandler = (event: SyntheticEvent) => {
     event.preventDefault();
-    this.setState({ loading: true });
     const formData: { [key: string]: string } = {};
 
     for (let key in this.state.orderForm) {
       formData[key] = this.state.orderForm[key].elementValue;
     }
 
-    const order = {
+    const order: Order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData: formData
     };
-    axios
-      .post('/orders.json', order)
-      .then(() => this.setState({ loading: false, loaded: true }))
-      .catch(() => this.setState({ loading: false }));
+
+    this.props.actionOrderBurger(order);
   };
 
   _checkValidity = (value: string, rules: ElementValidation) => {
@@ -233,13 +236,14 @@ class ContactData extends Component<Props> {
   );
 
   render() {
-    const { loaded, loading } = this.state;
+    const { placingOrder } = this.props;
+    const { loaded } = this.state;
 
     return (
       <div className="contact-data">
-        {!loaded && !loading && this._renderForm()}
-        {loading && <Spinner />}
-        {loaded && !loading && this._renderLoaded()}
+        {!loaded && !placingOrder && this._renderForm()}
+        {placingOrder && <Spinner />}
+        {loaded && !placingOrder && this._renderLoaded()}
       </div>
     );
   }
@@ -248,8 +252,13 @@ class ContactData extends Component<Props> {
 const mapStateToProps = (state: ReduxState) => {
   return {
     ingredients: state.ingredients,
-    totalPrice: state.totalPrice
+    totalPrice: state.totalPrice,
+    placingOrder: state.placingOrder
   };
 };
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = {
+  actionOrderBurger
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

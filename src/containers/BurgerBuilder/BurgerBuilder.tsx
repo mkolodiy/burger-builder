@@ -9,7 +9,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { ReduxState } from '../../store/reducers/burgerBuilderReducer';
+import { ReduxState } from '../../store/reducers';
 import { actionAddIngredient, actionRemoveIngredient, actionInitIngredients } from '../../store/actions';
 
 interface State {
@@ -81,9 +81,7 @@ class BurgerBuilder extends Component<Props, State> {
 
     let orderSummary = this._renderOrderSummary(totalPrice);
 
-    // orderSummary = this.props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
-
-    let burger = <Spinner />;
+    let burger = this.props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
     if (this.props.ingredients.length !== 0) {
       burger = this._renderBurger(disableInfo, totalPrice);
     }

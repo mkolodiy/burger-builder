@@ -4,7 +4,7 @@ import { RouteComponentProps, Route } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 import { Ingredient } from '../../common/Types';
 import { connect } from 'react-redux';
-import { ReduxState } from '../../store/reducers/burgerBuilderReducer';
+import { ReduxState } from '../../store/reducers';
 
 interface State {
   ingredients: Ingredient[];
