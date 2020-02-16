@@ -13,7 +13,7 @@ const Order: FC<Props> = props => (
       <p>
         Ingredients:
         {props.ingredients.map((ingredient: Ingredient) => (
-          <span>
+          <span key={ingredient.type}>
             {ingredient.type.toString()} ({ingredient.amount})
           </span>
         ))}

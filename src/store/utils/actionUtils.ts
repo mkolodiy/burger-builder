@@ -3,12 +3,16 @@ import { AxiosRequestConfig } from 'axios';
 import { Dispatch, Action } from 'redux';
 
 export enum ActionType {
+  RESET_INGREDIENTS = 'RESET_INGREDIENTS',
+  RESET_TOTAL_PRICE = 'RESET_TOTAL_PRICE',
   ADD_INGREDIENT = 'ADD_INGREDIENT',
   REMOVE_INGREDIENT = 'REMOVE_INGREDIENT',
   SET_INGREDIENTS = 'SET_INGREDIENTS',
   SET_ERROR = 'SET_ERROR',
   ORDER_BURGER = 'ORDER_BURGER',
-  SET_PLACING_ORDER = 'SET_PLACING_ORDER'
+  SET_PLACING_ORDER = 'SET_PLACING_ORDER',
+  FETCH_ORDERS = 'FETCH_ORDERS',
+  SET_FETCHING_ORDERS = 'SET_FETCHING_ORDERS'
 }
 
 export enum ActionStatus {
@@ -24,6 +28,7 @@ export enum HttpMethod {
 
 export interface LocalAction<A = any, B = any> extends Action<A> {
   payload?: B;
+  additionalData?: any;
 }
 
 export interface ThunkAction<A = any, B = any> extends LocalAction<A, B> {
@@ -58,7 +63,8 @@ export const createThunkAction = (action: ThunkAction) => {
       .then(response => {
         const actionSuccess: LocalAction = {
           type: getType(type, ActionStatus.SUCCESS),
-          payload: response.data
+          payload: response.data,
+          additionalData: payload
         };
         dispatch(actionSuccess);
       })

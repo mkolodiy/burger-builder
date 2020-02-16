@@ -35,6 +35,8 @@ const ingredients = (state: Ingredient[] = [], action: ThunkAction<string, Ingre
       return handleIngredients(state, action.payload!, false);
     case getType(ActionType.SET_INGREDIENTS, ActionStatus.SUCCESS):
       return action.payload || [];
+    case ActionType.RESET_INGREDIENTS:
+      return [];
     default:
       return state;
   }
@@ -46,6 +48,8 @@ const totalPrice = (state: number = 4, action: ThunkAction<string, InnerIngredie
       return state + INGREDIENT_PRICES[action.payload!];
     case ActionType.REMOVE_INGREDIENT:
       return state - INGREDIENT_PRICES[action.payload!];
+    case ActionType.RESET_TOTAL_PRICE:
+      return 4;
     default:
       return state;
   }

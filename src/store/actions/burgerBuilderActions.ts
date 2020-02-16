@@ -25,3 +25,15 @@ export const actionInitIngredients = (): ThunkAction<any, {}, {}, AnyAction> => 
     method: HttpMethod.GET
   });
 };
+
+export const actionResetIngredients = () => {
+  return createLocalAction({
+    type: ActionType.RESET_INGREDIENTS
+  });
+};
+
+export const actionResetTotalPrice = () => {
+  return createLocalAction({
+    type: ActionType.RESET_TOTAL_PRICE
+  });
+};

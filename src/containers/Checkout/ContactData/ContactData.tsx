@@ -8,9 +8,9 @@ import { RouteComponentProps } from 'react-router';
 import Input from '../../../components/UI/Input/Input';
 import { ReduxState } from '../../../store/reducers';
 import { connect } from 'react-redux';
-import { actionOrderBurger } from '../../../store/actions';
+import { actionOrderBurger, actionResetIngredients, actionResetTotalPrice } from '../../../store/actions';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-import { Order } from '../../../store/reducers/orderReducer';
+import { IOrder } from '../../../store/reducers/orderReducer';
 
 interface ElementConfigOptions {
   value: string;
@@ -51,6 +51,8 @@ interface ReduxProps {
 
 interface DispatchProps {
   actionOrderBurger: typeof actionOrderBurger;
+  actionResetIngredients: typeof actionResetIngredients;
+  actionResetTotalPrice: typeof actionResetTotalPrice;
 }
 
 type Props = ReduxProps & DispatchProps & RouteComponentProps;
@@ -153,13 +155,17 @@ class ContactData extends Component<Props> {
       formData[key] = this.state.orderForm[key].elementValue;
     }
 
-    const order: Order = {
+    const order: IOrder = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
       orderData: formData
     };
 
-    this.props.actionOrderBurger(order);
+    Promise.resolve(this.props.actionOrderBurger(order)).then(() => {
+      this.setState({
+        loaded: true
+      });
+    });
   };
 
   _checkValidity = (value: string, rules: ElementValidation) => {
@@ -196,6 +202,10 @@ class ContactData extends Component<Props> {
     });
   };
 
+  _onGoBack = () => {
+    Promise.all([this.props.actionResetIngredients(), this.props.actionResetTotalPrice()]).then(() => this.props.history.push('/'));
+  };
+
   _renderForm = () => {
     const formElements = [];
     for (let key in this.state.orderForm) {
@@ -229,7 +239,7 @@ class ContactData extends Component<Props> {
   _renderLoaded = () => (
     <>
       <h1>Success</h1>
-      <Button type={ButtonType.SUCCESS} onClick={() => this.props.history.push('/')}>
+      <Button type={ButtonType.SUCCESS} onClick={this._onGoBack}>
         Go back
       </Button>
     </>
@@ -258,7 +268,9 @@ const mapStateToProps = (state: ReduxState) => {
 };
 
 const mapDispatchToProps = {
-  actionOrderBurger
+  actionOrderBurger,
+  actionResetIngredients,
+  actionResetTotalPrice
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));

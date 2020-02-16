@@ -10,7 +10,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { ReduxState } from '../../store/reducers';
-import { actionAddIngredient, actionRemoveIngredient, actionInitIngredients } from '../../store/actions';
+import { actionAddIngredient, actionRemoveIngredient, actionInitIngredients, actionResetTotalPrice } from '../../store/actions';
 
 interface State {
   modalOpened: boolean;
@@ -26,6 +26,7 @@ interface DispatchProps {
   actionAddIngredient: typeof actionAddIngredient;
   actionRemoveIngredient: typeof actionRemoveIngredient;
   actionInitIngredients: typeof actionInitIngredients;
+  actionResetTotalPrice: typeof actionResetTotalPrice;
 }
 
 type Props = RouteComponentProps & ReduxProps & DispatchProps;
@@ -37,6 +38,7 @@ class BurgerBuilder extends Component<Props, State> {
 
   componentDidMount() {
     this.props.actionInitIngredients();
+    this.props.actionResetTotalPrice();
   }
 
   _isPurchasable = () => {
@@ -108,7 +110,8 @@ const mapStateToProps = (state: ReduxState) => {
 const mapDispatchToProps = {
   actionAddIngredient,
   actionRemoveIngredient,
-  actionInitIngredients
+  actionInitIngredients,
+  actionResetTotalPrice
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

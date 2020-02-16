@@ -20,13 +20,6 @@ export enum ButtonType {
   DANGER
 }
 
-export interface IOrder {
-  id: string;
-  customer: {};
-  ingredients: Ingredient[];
-  price: number;
-}
-
 export enum InputType {
   INPUT = 'input',
   TEXTAREA = 'textarea',
